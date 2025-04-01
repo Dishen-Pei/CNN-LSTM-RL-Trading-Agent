@@ -1,14 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
 #Step 5B: Reinforcement learning with Proximal Policy Optimization (PPO)
-
-
-# In[17]:
-
 
 # ppo_trainer.py
 get_ipython().system('pip install shimmy>=2.0')
@@ -45,11 +38,6 @@ model.save("ppo_trading_agent")
 print(" PPO Agent has been saved as ppo_trading_agent.zip")
 
 
-
-
-# In[ ]:
-
-
 #Record signal and Asset Info
 obs = env.reset()
 done = False
@@ -75,9 +63,6 @@ log_df.to_csv("ppo_trading_log.csv", index=False)
 print("The strategy signals and asset records are saved as ppo_trading_log.csv")
 
 
-# In[19]:
-
-
 # Model Result Visualization
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -93,9 +78,6 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
-
-
-# In[ ]:
 
 
 

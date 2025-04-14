@@ -119,6 +119,33 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
 # --- Step 6: Train Model ---
+import torch
+import torch.nn as nn
+
+class CNN_LSTM(nn.Module):
+    def __init__(self, input_size, hidden_size=64, num_layers=2):
+        super(CNN_LSTM, self).__init__()
+        self.conv1 = nn.Conv1d(in_channels=input_size, out_channels=32, kernel_size=3, padding=1)
+        self.relu = nn.ReLU()
+        self.lstm = nn.LSTM(input_size=32, hidden_size=hidden_size,
+                            num_layers=num_layers, batch_first=True)
+        self.norm = nn.LayerNorm(hidden_size)
+        self.dropout = nn.Dropout(0.3)
+        self.fc = nn.Linear(hidden_size, 2)
+
+    def forward(self, x):
+        # Input x shape: [batch, seq_len, input_size]
+        x = x.permute(0, 2, 1)         # → [batch, input_size, seq_len]
+        x = self.relu(self.conv1(x))  # → [batch, 32, seq_len]
+        x = x.permute(0, 2, 1)        # → [batch, seq_len, 32]
+
+        out, _ = self.lstm(x)         # → [batch, seq_len, hidden_size]
+        out = out[:, -1, :]           # 取最后一个时间步
+        out = self.norm(out)
+        out = self.dropout(out)
+        out = self.fc(out)
+        return out
+        
 train_losses = []
 
 for epoch in range(10):
@@ -329,6 +356,9 @@ plt.show()
 
 # In[ ]:
 
+model = CNN_LSTM(input_size=X.shape[2])
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 #Exact model forcasting results
 import torch

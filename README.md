@@ -99,47 +99,54 @@ Processed Data Link: https://drive.google.com/file/d/17V9UVHAW8-2ISfODsBHK5bWiU2
 · Optimized for integration with tools like PyCaret or backtesting frameworks.
 
 
+ 
 
-Step3. CNN-LSTM Model
+Step3 & 4. CNN-LSTM Model and Optimization
+
 Objective:
 This project aims to build a deep learning model using a combination of Convolutional and Recurrent Neural Networks to predict the directional movement (up/down) of cryptocurrency prices based on historical price data and technical indicators.
 
 🔧 Model Construction Process
-📥 Data Loading & Feature Engineering
+1. 📥 Data Loading & Feature Engineering
 
-The dataset (cleaned_crypto_data.csv) contains cryptocurrency price and volume data.
+· The dataset (cleaned_crypto_data.csv) contains cryptocurrency price and volume data.
 
-Technical indicators such as RSI, MACD, EMA, Bollinger Bands, and momentum were computed using the ta library.
+· Technical indicators such as RSI, MACD, EMA, Bollinger Bands, and momentum were computed using the ta library.
 
-A binary label is created where:
+· A binary label is created where:
+ 
+    1 = future price > current price
 
-1 = future price > current price
+    0 = otherwise.
 
-0 = otherwise.
+2. 🧹 Data Preprocessing
 
-🧹 Data Preprocessing
+· Missing values are handled and dropped after computing indicators.
 
-Missing values are handled and dropped after computing indicators.
+· Features are standardized using StandardScaler.
 
-Features are standardized using StandardScaler.
+· Sequences of past 24 hours of data (window=24) are created as model inputs.
 
-Sequences of past 24 hours of data (window=24) are created as model inputs.
+3. 📊 Train/Test Split
 
-📊 Train/Test Split
+· The data is split into 80% training and 20% testing sets.
 
-The data is split into 80% training and 20% testing sets.
+· DataLoader is used to handle batching and shuffling.
 
-DataLoader is used to handle batching and shuffling.
+4. 🧠 Model Variants Implemented
 
-🧠 Model Variants Implemented
+· Basic LSTM: A two-layer LSTM followed by a fully connected output layer.
+![image](https://github.com/user-attachments/assets/64d11626-81cd-4b56-9bed-eb026e6e9b09)
 
-Basic LSTM: A two-layer LSTM followed by a fully connected output layer.
+· Bidirectional LSTM: Enhances temporal understanding using both forward and backward sequences.
+![image](https://github.com/user-attachments/assets/088b87b0-20b8-4246-9618-30423d272e2c)
 
-Bidirectional LSTM: Enhances temporal understanding using both forward and backward sequences.
 
-Regularized LSTM: Adds dropout and layer normalization to reduce overfitting.
+· Regularized LSTM: Adds dropout and layer normalization to reduce overfitting.
+![image](https://github.com/user-attachments/assets/287372a8-3c30-4b25-a936-f44f4a7dc189)
 
-Note: While CNN was mentioned in the filename, the model is purely LSTM-based in the current version.
+
+· Note: While CNN was mentioned in the filename, the model is purely LSTM-based in the current version.
 
 📈 Training and Evaluation
 
